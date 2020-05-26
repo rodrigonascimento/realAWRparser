@@ -1,0 +1,11 @@
+{
+  "Load Profile": [
+    "Read IO requests",
+    "Write IO requests",
+    "Read IO (MB)",
+    "Write IO (MB)"
+  ],
+  "Top 10 Foreground Events": [
+    "db file sequential read"
+  ]
+}
