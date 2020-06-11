@@ -73,7 +73,7 @@ class AWRFile:
                 else:
                     line += 1
 
-    def parse_all(self):
+    def parse_to_csv(self):
         self.parse_load_profile()
         self.parse_top_foreground()
 

@@ -48,7 +48,7 @@ def main():
         csv_filename = path.abspath(awr_file).split('/')[len(path.abspath(awr_file).split('/'))-2] + '.csv'
         awr = AWRFile(file_name=awr_file, perf_metrics=metrics)
         awr.read_file()
-        p = awr.parse_all()
+        p = awr.parse_to_csv()
         with open(csv_filename, 'a') as outf:
             if not header:
                 outf.write(csv_header(awr=awr) + '\n')
