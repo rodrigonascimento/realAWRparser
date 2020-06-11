@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 
+from os import path
+
 
 class AWRFile:
     def __init__(self, file_name=None, perf_metrics=None):
@@ -44,6 +46,11 @@ class AWRFile:
                 else:
                     line += 1
 
+        self.load_profile['Total IO Requests'] = \
+            self.load_profile['Read IO requests'] + self.load_profile['Write IO requests']
+
+        self.load_profile['Total IO (MB)'] = self.load_profile['Read IO (MB)'] + self.load_profile['Write IO (MB)']
+
     def parse_top_foreground(self):
         pos = self._get_section_offset(section_header='Top 10 Foreground Events')
         if pos is None:
@@ -65,3 +72,23 @@ class AWRFile:
                     break
                 else:
                     line += 1
+
+    def parse_all(self):
+        self.parse_load_profile()
+        self.parse_top_foreground()
+
+        stats_values = ''
+        for metric in self.load_profile:
+            stats_values += str(self.load_profile[metric]) + ','
+
+        for metric in self.top10:
+            stats_values += str(self.top10[metric]) + ','
+
+        file_absulote_path = path.abspath(self.file_name).split('/')
+        file_name = file_absulote_path[len(file_absulote_path)-1]
+        run_name = file_absulote_path[len(file_absulote_path)-2]
+        num_threads = file_absulote_path[len(file_absulote_path)-1].split('.')[3][:-7]
+
+        stats_values += run_name + ',' + num_threads + ',' + file_name
+
+        return stats_values
